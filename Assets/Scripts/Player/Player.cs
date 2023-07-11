@@ -67,10 +67,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Won()
-    {
-        _animator.SetBool("hasWon",true);
-    }
+    public void Won() => _animator.SetBool("hasWon",true);
 
     private void Drop()
     {

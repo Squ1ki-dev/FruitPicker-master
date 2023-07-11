@@ -22,12 +22,11 @@ public class TaskManager : MonoBehaviour
     public Task<Fruit> Task { get; set; }
 
     [SerializeField] private UnityEvent _wonEvent;
-    [SerializeField] private UnityEvent _addOneEvent;
 
     private int pickedCount;
     [SerializeField] private int maxTaskCapacity;
 
-    [SerializeField] private TMP_Text _fruitCounter, _addOne;
+    [SerializeField] private TMP_Text _fruitCounter, _addOne, _levelPassed;
 
     [SerializeField] private FruitPool _fruitPool;
 
@@ -47,13 +46,13 @@ public class TaskManager : MonoBehaviour
     public void PutFruit(Fruit fruit)
     {
         if (fruit?.Kind == Task.Goal.Kind && pickedCount < Task.Count)
-        {
-            _addOneEvent.Invoke();
             MoveText();
-        }
 
         if (pickedCount == Task.Count)
+        {
+            _levelPassed.DOFade(1f, 1f);
             _wonEvent.Invoke();
+        }
             
         return;
     }
@@ -62,14 +61,14 @@ public class TaskManager : MonoBehaviour
     {
         pickedCount++;
         _addOne.alpha = 1f;
-        _addOne.rectTransform.DOMove(new Vector2(500f, 1080f), 1f)
+        _addOne.rectTransform.DOAnchorPos(new Vector3(206f, 636f, 0f), 1f)
             .SetEase(Ease.OutQuad).OnComplete(() => FadeText());
     }
 
     private void FadeText()
     {
         _addOne.DOFade(0f, 1f).SetDelay(0.5f)
-            .OnComplete(() => _addOne.rectTransform.DOMove(new Vector2(150f, 800f), 1f));
+            .OnComplete(() => _addOne.rectTransform.DOAnchorPos(new Vector3(-344f, 245.5f, 0f), 1f));
     }
 
     private void UpdateFruitCounterText()
